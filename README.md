@@ -1,4 +1,6 @@
-![Logo del juego](./src/assets/LogoGames.png)
+<p align="center">
+  <img src="./src/assets/LogoGames.png" width="200px" alt="logo">
+</p>
 #OXO Game
 
 Dive into strategy with our OXO game! Place 'X' or 'O' to win. Can you get three in a row?
