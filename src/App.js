@@ -1,4 +1,5 @@
 import { useState } from "react";
+import logo from './assets/LogoGames.png';
 
 function Square({ value, onSquareClick }) {
   const squareStyle = {
@@ -27,12 +28,16 @@ function Board({ xIsNext, squares, onPlay }) {
   }
 
   const winner = calculateWinner(squares);
-  let status;
-  if (winner) {
-    status = "Ganador: " + winner;
-  } else {
-    status = "Siguiente jugador: " + (xIsNext ? "X" : "O");
-  }
+  const isTie = squares.every(square => square !== null) && !winner;
+  const start = squares.every(square => square === null);
+
+  let status = start
+  ? "Play now!"
+  : winner
+  ? "Winner: " + winner
+  : isTie
+  ? "It's a tie!"
+  : "Next player: " + (xIsNext ? "X" : "O");
 
   return (
     <>
@@ -68,34 +73,23 @@ export default function Game() {
     setCurrentMove(nextHistory.length - 1);
   }
 
-  function jumpTo(nextMove) {
-    setCurrentMove(nextMove);
+  function resetGame() {
+    setHistory([Array(9).fill(null)]);
+    setCurrentMove(0);
   }
-
-  const moves = history.map((squares, move) => {
-    let description;
-    if (move > 0) {
-      description = "Ir hacia la jugada #" + move;
-    } else {
-      description = "Ir al inicio del juego";
-    }
-    return (
-      <li key={move}>
-        <button onClick={() => jumpTo(move)}>{description}</button>
-      </li>
-    );
-  });
 
   return (
     <div className="game">
       <div className="game-logo">
-        <img src="assets/logo.png" alt="Logo del juego" />
+        <img src={logo} alt="Logo del juego" />
       </div>
+      <h1>OXO</h1>
+      <p>Dive into strategy with our OXO game! Place 'X' or 'O' to win. Can you get three in a row?</p>
       <div className="game-board">
         <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       </div>
       <div className="game-info">
-        <ol>{moves}</ol>
+        <button onClick={resetGame}>Reset Game</button>
       </div>
     </div>
   );
